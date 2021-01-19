@@ -4,21 +4,12 @@ using System.Text;
 
 namespace InlamningsUppgift3.Enemies {
     public class Wolf : Monster {
-
-        public string MonsterType { get; private set; }
         public Wolf() {
 
         }
 
-        public Wolf(int level, int maxAttack, int minAttack, int exp, int health) {
-            this.Name = Utility.RandomMonsterName();
-            this.Level = level;
-            this.MaxAttack = maxAttack;
-            this.MinAttack = minAttack;
-            this.Exp = exp;
-            this.MaxHealth = health;
-            this.SetHealth(health);
-            this.MonsterType = "Wolf";
+        public Wolf(Player player) {
+            base.GenerateStats(player, "Wolf");
         }
 
         public override int Attack() {

@@ -44,6 +44,7 @@ namespace InlamningsUppgift3 {
                 string input = Console.ReadLine();
                 if (input != "" && input != null) {
                     player.Name = input;
+                    Console.Clear();
                     break;
                 }
                 Console.WriteLine("You did not enter a name");
@@ -56,7 +57,7 @@ namespace InlamningsUppgift3 {
                 if(player.Level == 10) {
                     Console.WriteLine("You won the game");
                     runGame = false;
-                } else if (player.IsDead == true) {
+                } else if (player.IsDead) {
                       Console.WriteLine("You died and lost the game");
                     runGame = false;
                 } else {
@@ -67,8 +68,7 @@ namespace InlamningsUppgift3 {
 
         private void Menu() {
             int nrOfMenuChoices = 3;
-            Console.WriteLine(@"
-1. Go Adventuring
+            Console.WriteLine(@"1. Go Adventuring
 2. Show details about your character
 3. Exit game
 ");
@@ -104,21 +104,40 @@ namespace InlamningsUppgift3 {
         }
 
         private void Battle() {
-            Console.WriteLine(@"UH OH! A Wild Monster appeared!");
-
+            //Generate a random monster based on stats from player.
             Monster monster = Utility.GenerateRandomMonster(player);
 
-            
+            Console.WriteLine($"Uh oh! A Wild {monster.MonsterType} appeared!");
+            Console.WriteLine($"His name is {monster.Name}");
+            bool battling = true;
+            while(battling) {
+                int playerDamage = player.Attack();
+                monster.TakeDamage(playerDamage);
+                Console.WriteLine($"You hit {monster.Name}, dealing {playerDamage} damage");
+                if(monster.IsDead) {
+                    Console.WriteLine($"You killed {monster.Name}, gaining {monster.Exp} experience!");
+                    player.UpdateExp(monster.Exp);
+                    Console.WriteLine($"You are Level {player.Level} and you have {player.Exp} exp and {player.CurrentHealth} hp");
+                    battling = false;
+                } else {
+                    Console.WriteLine("UUooooaah *slurp* ");
+                
+                    int monsterDamage = monster.Attack();
+                    player.TakeDamage(monsterDamage);
+                    Console.WriteLine($"{monster.Name} hit you dealing {monsterDamage}");
+                    if(player.IsDead) {
+                        Console.WriteLine($"You were killed by {monster.Name} :(");
+                        battling = false;
+                    }
+                    Console.WriteLine($"{player.Name}: {player.CurrentHealth} hp");
+                    Console.WriteLine($"{monster.Name}: {monster.CurrentHealth} hp");
+                }
+                
+                Console.WriteLine("[Press enter to continue]");
+                Console.ReadKey();
+                Console.Clear();
 
-
-
-
-            
-
-
-            //TODO Implement A battle
-
-
+            }
         }
         
         #endregion

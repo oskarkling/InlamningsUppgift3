@@ -12,7 +12,10 @@ namespace InlamningsUppgift3 {
         public int MinAttack { get; set; }
         public int Exp { get; set; }
 
+        private double expSumRequierdPerLevel = 60;
+
         public Player() {
+            //Some Base stats
             SetHealth(200);
             MaxAttack = 10;
             MinAttack = 5;
@@ -32,17 +35,28 @@ namespace InlamningsUppgift3 {
 
         public void UpdateExp(int exp) {
             Exp += exp;
-            if(Exp >= 100) {
+            
+            if(Exp >= expSumRequierdPerLevel) {
                 Level++;
                 Console.WriteLine($"You have reached Level {Level}! Congrats!");
-                Exp = Exp - 100;
+                Exp = 0;
+
+                //Exp requierd is +10% per level
+                expSumRequierdPerLevel = 1.5 * expSumRequierdPerLevel;
+                UpdateStats();
+                Console.WriteLine("You have also gained some health!");
+                SetHealth(this.MaxHealth);
             }
+        }
+
+        private void UpdateStats() {
+            //TODO implement stats update. like +10% / Level
         }
 
         public override string ToString() {
             string s = @$"{Name}
 Level: {Level}
-Exp needed for next level: {100 - Exp}
+Exp needed for next level: {expSumRequierdPerLevel - Exp}
 Attack damage: {MinAttack} - {MaxAttack} 
 Health: {CurrentHealth} / {MaxHealth}";
             return s;

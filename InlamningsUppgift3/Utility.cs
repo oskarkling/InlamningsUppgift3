@@ -52,7 +52,7 @@ namespace InlamningsUppgift3 {
         /// </summary>
         /// <returns></returns>
         public static string RandomMonsterName() {
-            string[] names = new string[5] { "Darf Veder", "Steven", "Arthas", "Petter Stordalen", "Lasse Kongo" };
+            string[] names = new string[5] { "Darf Veder", "Steven", "Arthas", "Peter Stordalen", "Lasse Kongo" };
             string name = names[RandomInt(0, names.Length - 1)];
             return name;
         }
@@ -61,18 +61,18 @@ namespace InlamningsUppgift3 {
         public static Monster GenerateRandomMonster(Player player) {
             Monster monster = new Dragon();
 
-            
-
             int random = RandomInt(1, 3);
             switch (random) {
                 case 1:
-                    monster = new Dragon();
+                    monster = new Dragon(player);
                     break;
                 case 2:
-                    monster = new DesertTroll();
+                    monster = new Wolf(player);
+                    //monster = new DesertTroll();
                     break;
                 case 3:
-                    monster = new Wolf();
+                    monster = new DesertTroll(player);
+                    //monster = new Wolf();
                     break;
             }
             return monster;

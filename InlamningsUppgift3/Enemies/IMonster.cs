@@ -10,6 +10,8 @@ namespace InlamningsUppgift3.Enemies {
         public int MinAttack { get; set; }
         public int Exp { get; set; }
 
+        public string MonsterType { get; set; }
+
         public int Attack();
 
     }
