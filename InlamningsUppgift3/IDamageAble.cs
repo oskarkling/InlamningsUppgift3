@@ -5,7 +5,8 @@ using System.Text;
 namespace InlamningsUppgift3 {
     interface IDamageAble {
 
-        int Health { get; set; }
+        int MaxHealth { get; set; }
+        int CurrentHealth { get; }
         void TakeDamage(int damage);
     }
 }

@@ -3,24 +3,22 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace InlamningsUppgift3 {
-    public class LivingEntity : IDamageAble {
+    public abstract class LivingEntity : IDamageAble {
 
-        private int health;
-        private bool isDead;
-        public int Health {
-            get { return health;}
-            set { health = value; }
-        }
+        public int MaxHealth { get; set; }
+        public int CurrentHealth { get; private set; }
+        public bool IsDead { get; set; }
 
-        public bool IsDeaD {
-            get { return isDead; }
-        }
-        
         public void TakeDamage(int damage) {
-            health -= damage;
-            if(health < 0 ) {
-                isDead = true;
+            CurrentHealth -= damage;
+            if(CurrentHealth <= 0 ) {
+                IsDead = true;
             }
+        }
+
+        public void SetHealth(int health) {
+            MaxHealth = health;
+            CurrentHealth = MaxHealth;
         }
     }
 }
