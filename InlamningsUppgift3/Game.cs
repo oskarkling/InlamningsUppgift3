@@ -13,17 +13,35 @@ namespace InlamningsUppgift3 {
         private Player player;
 
         public Game() {
-
+            Load();
         }
         #region Public Methods
-        public void Run() {
-            Load();
-            Start();
+        public void Run() {           
+            Console.WriteLine(@"************************
+* Welcome to The Game! *
+************************");           
+            GetPlayerName();
+            GameLogic();
         }
         #endregion
 
         #region Private Methods
-
+        //Simple method with while loop to check if There is a atleast one char in the input from user.
+        private void GetPlayerName() {
+            while (true) {
+                Console.WriteLine("Enter your name: ");
+                string input = Console.ReadLine();
+                if(Utility.IsThisSenpai(input)) {
+                    player.OmaeWaMouShindeiru();
+                }
+                if (input != "" && input != null) {
+                    player.Name = input;
+                    Console.Clear();
+                    break;
+                }
+                Console.WriteLine("You did not enter anything for a name.");
+            }
+        }
         //Method is creating instances of objects
         private void Load() {
             runGame = true;
@@ -32,23 +50,6 @@ namespace InlamningsUppgift3 {
             //Or a list of IMonster
         }
 
-        private void Start() {           
-            Console.WriteLine(@"************************
-* Welcome to The Game! *
-************************");
-            //Simple while loop to check if There is a atleast one char in the input from user.
-            while (true) {
-                Console.WriteLine("Enter your name: ");
-                string input = Console.ReadLine();
-                if (input != "" && input != null) {
-                    player.Name = input;
-                    Console.Clear();
-                    break;
-                }
-                Console.WriteLine("You did not enter anything for a name.");
-            }
-            GameLogic();
-        }
 
         //The loop inside GameLogic will loop through the game. If it stops. The game is over in some way.
         private void GameLogic() {
@@ -108,10 +109,10 @@ namespace InlamningsUppgift3 {
         //This method is for the battle simulation.
         private void Battle() {
             //Generate a random monster based on stats from player.
-            Monster monster = Utility.GenerateRandomMonster(player);
-
+            Monster monster = Utility.GenerateRandomMonster(player);       
             Console.WriteLine($"Uh oh! A Wild {monster.MonsterType} appeared!");
             Console.WriteLine($"His name is {monster.Name}");
+            Utility.Nani(player, monster);
             bool battling = true;
             while(battling) {
                 int playerDamage = player.Attack();

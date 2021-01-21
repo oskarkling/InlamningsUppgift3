@@ -3,6 +3,8 @@ using InlamningsUppgift3.Enemies;
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
+using System.Xml;
+using System.Threading;
 
 namespace InlamningsUppgift3 {
     public static class Utility {
@@ -79,5 +81,25 @@ namespace InlamningsUppgift3 {
             return monster;
         }
 
+        public static bool IsThisSenpai(string input) {
+            bool res = false;
+            if(input == "robin" || input == "kakashi" || input == "senpai") {
+                res = true;
+            }
+            return res;
+        }
+
+        public static void Nani(Player player, Monster monster) {
+            if (player.GodMode) {
+                Thread.Sleep(2000);
+                Console.Clear();
+                Console.WriteLine($"{player.Name}: Omae Wa Mou Shindeiru");
+                Thread.Sleep(3000);
+                
+                Console.WriteLine($"{monster.Name}: NANI?");              
+                Thread.Sleep(4000);
+                Console.Clear();
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Security.Principal;
 using System.Text;
 
@@ -11,6 +12,8 @@ namespace InlamningsUppgift3 {
         public int MaxAttack { get; set; }
         public int MinAttack { get; set; }
         public int Exp { get; set; }
+
+        public bool GodMode { get; private set; }
 
         private double expSumRequierdPerLevel = 60;
 
@@ -60,12 +63,23 @@ Attack damage: {this.MinAttack} - {this.MaxAttack}
 Health: {Convert.ToInt32(this.CurrentHealth)} / {Convert.ToInt32(this.MaxHealth)}";
             return s;
         }
+        public void OmaeWaMouShindeiru() {
+            this.GodMode = true;
+
+            //Power level over 9000.
+            this.Level = 9;
+            this.SetHealth(9000 + 1);
+            this.MaxAttack = 9000 + 1;
+            this.MinAttack = 9000;
+
+        }
         #endregion
 
         #region Private Methods
         private void UpdateStats() {
             //TODO implement stats update. like +10% / Level
         }
+
         #endregion
     }
 }
