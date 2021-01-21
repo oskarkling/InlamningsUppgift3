@@ -18,6 +18,12 @@ namespace InlamningsUppgift3.Enemies {
 
         abstract public int Attack();
 
+
+        /// <summary>
+        /// Generate stats for a monster. Based on player Level
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="monsterType"></param>
         public void GenerateStats(Player player, string monsterType) {
             this.Name = Utility.RandomMonsterName();
             this.Level = player.Level;

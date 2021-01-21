@@ -6,9 +6,6 @@ using System.Text;
 
 namespace InlamningsUppgift3 {
     public static class Utility {
-        
-
- 
 
         /// <summary>
         /// Returns A random number from min to max.
@@ -57,7 +54,11 @@ namespace InlamningsUppgift3 {
             return name;
         }
 
-        //TODO generate random monster
+        /// <summary>
+        /// Returns a random monster based on player level
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
         public static Monster GenerateRandomMonster(Player player) {
             Monster monster = new Dragon();
 

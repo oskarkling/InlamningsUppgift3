@@ -12,7 +12,6 @@ namespace InlamningsUppgift3 {
         private bool runGame;
         private Player player;
 
-
         public Game() {
 
         }
@@ -27,18 +26,17 @@ namespace InlamningsUppgift3 {
 
         //Method is creating instances of objects
         private void Load() {
-            Console.WriteLine("Loading in objects");
             runGame = true;
             player = new Player();
-            
+            //Could have made a list here of monsters
+            //Or a list of IMonster
         }
 
         private void Start() {           
-            Console.WriteLine(@"
-************************
+            Console.WriteLine(@"************************
 * Welcome to The Game! *
 ************************");
-            //Simple while loop to check if There is a atleast a character in the input.
+            //Simple while loop to check if There is a atleast one char in the input from user.
             while (true) {
                 Console.WriteLine("Enter your name: ");
                 string input = Console.ReadLine();
@@ -47,11 +45,12 @@ namespace InlamningsUppgift3 {
                     Console.Clear();
                     break;
                 }
-                Console.WriteLine("You did not enter a name");
+                Console.WriteLine("You did not enter anything for a name.");
             }
             GameLogic();
         }
 
+        //The loop inside GameLogic will loop through the game. If it stops. The game is over in some way.
         private void GameLogic() {
             while(runGame) {
                 if(player.Level == 10) {
@@ -66,6 +65,7 @@ namespace InlamningsUppgift3 {
             }
         }
 
+        //Simple Menu switch with user input.
         private void Menu() {
             int nrOfMenuChoices = 3;
             Console.WriteLine(@"1. Go Adventuring
@@ -89,10 +89,12 @@ namespace InlamningsUppgift3 {
             }                
         }
 
+        //Overrides the toString() in the player class.
         private void ShowPlayerDetails() {
             Console.WriteLine(player.ToString());
         }
 
+        //Method that randoms if there will be a battle or not.
         private void GoAdventure() {
             if(Utility.RandomInt(1, 100) > 10) {
                 Battle();
@@ -103,6 +105,7 @@ namespace InlamningsUppgift3 {
             }
         }
 
+        //This method is for the battle simulation.
         private void Battle() {
             //Generate a random monster based on stats from player.
             Monster monster = Utility.GenerateRandomMonster(player);
@@ -119,9 +122,9 @@ namespace InlamningsUppgift3 {
                     player.UpdateExp(monster.Exp);
                     Console.WriteLine($"You are Level {player.Level} and you have {player.Exp} exp and {player.CurrentHealth} hp");
                     battling = false;
-                } else {
-                    Console.WriteLine("UUooooaah *slurp* ");
-                
+                } 
+                else {
+                    Console.WriteLine("UUooooaah *slurp* ");              
                     int monsterDamage = monster.Attack();
                     player.TakeDamage(monsterDamage);
                     Console.WriteLine($"{monster.Name} hit you dealing {monsterDamage}");
@@ -131,15 +134,12 @@ namespace InlamningsUppgift3 {
                     }
                     Console.WriteLine($"{player.Name}: {player.CurrentHealth} hp");
                     Console.WriteLine($"{monster.Name}: {monster.CurrentHealth} hp");
-                }
-                
+                }               
                 Console.WriteLine("[Press enter to continue]");
                 Console.ReadKey();
-                Console.Clear();
-
+                Console.Clear();                
             }
-        }
-        
+        }    
         #endregion
     }
 }

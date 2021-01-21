@@ -24,21 +24,23 @@ namespace InlamningsUppgift3 {
         }
         public Player(int health, int maxAttack, int minAttack, int level) {
             SetHealth(health);
-            MaxAttack = maxAttack;
-            MinAttack = minAttack;
-            Level = level;
-            Exp = 0;
+            this.MaxAttack = maxAttack;
+            this.MinAttack = minAttack;
+            this.Level = level;
+            this.Exp = 0;
         }
+
+        #region Public Methods
         public int Attack() {
-            return Utility.RandomInt(MinAttack, MaxAttack);
+            return Utility.RandomInt(this.MinAttack, this.MaxAttack);
         }
 
         public void UpdateExp(int exp) {
             Exp += exp;
-            
-            if(Exp >= expSumRequierdPerLevel) {
+
+            if (Exp >= expSumRequierdPerLevel) {
                 Level++;
-                Console.WriteLine($"You have reached Level {Level}! Congrats!");
+                Console.WriteLine($"You have reached Level {this.Level}! Congrats!");
                 Exp = 0;
 
                 //Exp requierd is +10% per level
@@ -49,18 +51,21 @@ namespace InlamningsUppgift3 {
             }
         }
 
+
+        public override string ToString() {
+            string s = @$"{this.Name}
+Level: {this.Level}
+Exp needed for next level: {expSumRequierdPerLevel - this.Exp}
+Attack damage: {this.MinAttack} - {this.MaxAttack} 
+Health: {Convert.ToInt32(this.CurrentHealth)} / {Convert.ToInt32(this.MaxHealth)}";
+            return s;
+        }
+        #endregion
+
+        #region Private Methods
         private void UpdateStats() {
             //TODO implement stats update. like +10% / Level
         }
-
-        public override string ToString() {
-            string s = @$"{Name}
-Level: {Level}
-Exp needed for next level: {expSumRequierdPerLevel - Exp}
-Attack damage: {MinAttack} - {MaxAttack} 
-Health: {CurrentHealth} / {MaxHealth}";
-            return s;
-        }
-
+        #endregion
     }
 }
