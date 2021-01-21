@@ -5,13 +5,16 @@ using System.Security.Principal;
 using System.Text;
 
 namespace InlamningsUppgift3 {
-    public class Player : LivingEntity {
+    public class Player : LivingEntity, IGold {
 
         public string Name { get; set; }
         public int Level { get; set; }
         public int MaxAttack { get; set; }
         public int MinAttack { get; set; }
         public int Exp { get; set; }
+        public int Gold { get; private set; }
+        public int Strength { get; private set; }
+        public int Toughness { get; private set; }
 
         public bool GodMode { get; private set; }
 
@@ -19,18 +22,14 @@ namespace InlamningsUppgift3 {
 
         public Player() {
             //Some Base stats
-            SetHealth(200);
-            MaxAttack = 10;
-            MinAttack = 5;
-            Level = 1;
-            Exp = 0;
-        }
-        public Player(int health, int maxAttack, int minAttack, int level) {
-            SetHealth(health);
-            this.MaxAttack = maxAttack;
-            this.MinAttack = minAttack;
-            this.Level = level;
+            this.SetHealth(200);
+            this.MaxAttack = 10;
+            this.MinAttack = 5;
+            this.Level = 1;
             this.Exp = 0;
+            this.Gold = 0;
+            this.Strength = 5;
+            this.Toughness = 2;
         }
 
         #region Public Methods
@@ -54,15 +53,61 @@ namespace InlamningsUppgift3 {
             }
         }
 
+        //Maybe dont need this
+        //public override void TakeDamage(int damage) {         
+        //    this.CurrentHealth -= damage;
+        //    if (this.CurrentHealth <= 0) {
+        //        this.IsDead = true;
+        //    }
+        //}
+        public int PlayerTakeDamage(int damage) {
+            damage -= this.Toughness;
+            if(damage < 0) {
+                damage = 0;
+            }
+            TakeDamage(damage);
+            return damage;
+        }
 
+        //TODO Implement strength in attack dmg
+        //TODO write Shop.cs
+        //
+
+        /// <summary>
+        /// Prints a stat summary of the Player.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString() {
+            Console.Clear();
             string s = @$"{this.Name}
 Level: {this.Level}
 Exp needed for next level: {expSumRequierdPerLevel - this.Exp}
 Attack damage: {this.MinAttack} - {this.MaxAttack} 
-Health: {Convert.ToInt32(this.CurrentHealth)} / {Convert.ToInt32(this.MaxHealth)}";
+Health: {this.CurrentHealth} / {this.MaxHealth}
+Strength: {this.Strength}
+Toughness: {this.Toughness}
+Gold: {this.Gold}";
             return s;
         }
+        
+        public int GetGold() {
+            return this.Gold;
+        }
+
+        public void LootGold(int amountGold) {
+            this.Gold += amountGold;
+        }
+
+        public int GiveGold(int amountGoldToGive) {
+            if(this.Gold - amountGoldToGive <= 0) {
+                Console.WriteLine("You do not have the gold");
+            } 
+            else {
+                this.Gold -= amountGoldToGive;
+            }
+            return amountGoldToGive;
+        }
+
         public void OmaeWaMouShindeiru() {
             this.GodMode = true;
 
@@ -71,6 +116,7 @@ Health: {Convert.ToInt32(this.CurrentHealth)} / {Convert.ToInt32(this.MaxHealth)
             this.SetHealth(9000 + 1);
             this.MaxAttack = 9000 + 1;
             this.MinAttack = 9000;
+            this.Gold = 9999;
 
         }
         #endregion

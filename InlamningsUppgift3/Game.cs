@@ -57,10 +57,12 @@ namespace InlamningsUppgift3 {
                 if(player.Level == 10) {
                     Console.WriteLine("You won the game");
                     runGame = false;
-                } else if (player.IsDead) {
+                } 
+                else if (player.IsDead) {
                       Console.WriteLine("You died and lost the game");
                     runGame = false;
-                } else {
+                } 
+                else {
                     Menu();
                 }
             }
@@ -99,7 +101,8 @@ namespace InlamningsUppgift3 {
         private void GoAdventure() {
             if(Utility.RandomInt(1, 100) > 10) {
                 Battle();
-            } else {
+            } 
+            else {
                 Console.WriteLine(@"Youu see nothing but swaying grass all around you...
 [Press enter to continue]");
                 Console.ReadKey();
@@ -108,8 +111,8 @@ namespace InlamningsUppgift3 {
 
         //This method is for the battle simulation.
         private void Battle() {
-            //Generate a random monster based on stats from player.
-            Monster monster = Utility.GenerateRandomMonster(player);       
+            //Generate a random monster based on stats from player.          
+            Monster monster = Utility.GenerateRandomMonster(player);
             Console.WriteLine($"Uh oh! A Wild {monster.MonsterType} appeared!");
             Console.WriteLine($"His name is {monster.Name}");
             Utility.Nani(player, monster);
@@ -121,13 +124,13 @@ namespace InlamningsUppgift3 {
                 if(monster.IsDead) {
                     Console.WriteLine($"You killed {monster.Name}, gaining {monster.Exp} experience!");
                     player.UpdateExp(monster.Exp);
+                    player.LootGold(monster.GetGold());
                     Console.WriteLine($"You are Level {player.Level} and you have {player.Exp} exp and {player.CurrentHealth} hp");
                     battling = false;
                 } 
                 else {
-                    Console.WriteLine("UUooooaah *slurp* ");              
-                    int monsterDamage = monster.Attack();
-                    player.TakeDamage(monsterDamage);
+                    Console.WriteLine("UUooooaah *slurp* ");
+                    int monsterDamage = player.PlayerTakeDamage(monster.Attack());
                     Console.WriteLine($"{monster.Name} hit you dealing {monsterDamage}");
                     if(player.IsDead) {
                         Console.WriteLine($"You were killed by {monster.Name} :(");

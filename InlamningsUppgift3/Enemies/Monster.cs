@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace InlamningsUppgift3.Enemies {
-    abstract public class Monster : LivingEntity, IMonster {
+    abstract public class Monster : LivingEntity, IMonster, IGold {
         public string Name { get; set; }
         public int Level { get; set; }
         public int MaxAttack { get; set; }
         public int MinAttack { get; set; }
         public int Exp { get; set; }
         public string MonsterType { get; set; }
+
+        public int Gold { get; private set; }
 
         public Monster() {          
             
@@ -33,7 +35,11 @@ namespace InlamningsUppgift3.Enemies {
             this.MaxHealth = player.MaxHealth / 4;
             this.SetHealth(this.MaxHealth);
             this.MonsterType = monsterType;
-            
+            this.Gold = 10 + Convert.ToInt32((1.1 * player.Level));
+        }
+
+        public int GetGold() {
+            return this.Gold;
         }
 
     }
