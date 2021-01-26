@@ -23,19 +23,19 @@ namespace InlamningsUppgift3 {
         /// <summary>
         /// Takes in an string and checks if its an int and if the int is in the range of menuchoices.
         /// </summary>
-        /// <param name="menuChoices"></param>
+        /// <param name="nrOfMenuChoices"></param>
         /// <returns></returns>
-        public static int GetIntInputChoice(int menuChoices) {
+        public static int GetIntInputChoice(int nrOfMenuChoices) {
             int menuChoice;
             while (true) {
                 try {
-                    string input = Console.ReadLine();
+                    string input = Console.ReadLine();                   
                     menuChoice = Convert.ToInt32(input);
-                    if (menuChoice <= menuChoices && menuChoice != 0) {
+                    if (menuChoice <= nrOfMenuChoices && menuChoice != 0) {
                         break;
                     }
                     else {
-                        Console.WriteLine($"Please enter a number from 1 to {menuChoices}");
+                        Console.WriteLine($"Please enter a number from 1 to {nrOfMenuChoices}");
                     }
                 }
                 catch {
@@ -44,6 +44,8 @@ namespace InlamningsUppgift3 {
             }
             return menuChoice;
         }
+
+        
 
 
         /// <summary>
@@ -81,24 +83,35 @@ namespace InlamningsUppgift3 {
             return monster;
         }
 
+        /// <summary>
+        /// Checking if the player name is someone of importance ^^
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         public static bool IsThisSenpai(string input) {
             bool res = false;
-            if(input == "robin" || input == "kakashi" || input == "senpai") {
+            input = input.ToLower();
+            if (input == "robin" || input == "kakashi" || input == "senpai") {
                 res = true;
             }
             return res;
         }
 
+        /// <summary>
+        /// If the player got God Mode true. A sequence of Nani in popculture shows.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="monster"></param>
         public static void Nani(Player player, Monster monster) {
             if (player.GodMode) {
                 Thread.Sleep(2000);
                 Console.Clear();
-                Console.WriteLine($"{player.Name}: Omae Wa Mou Shindeiru");
-                Thread.Sleep(3000);
-                
-                Console.WriteLine($"{monster.Name}: NANI?");              
-                Thread.Sleep(4000);
-                Console.Clear();
+                Console.WriteLine($"\n{player.Name}: Omae Wa Mou Shindeiru");
+                Thread.Sleep(3000);               
+                Console.WriteLine($"\n{monster.Name}: NANI?\n");              
+                Thread.Sleep(2000);
+                Animations anim = new Animations();
+                anim.ExplosionGodMode(player, monster);
             }
         }
     }

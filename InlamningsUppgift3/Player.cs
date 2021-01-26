@@ -6,7 +6,6 @@ using System.Text;
 
 namespace InlamningsUppgift3 {
     public class Player : LivingEntity, IGold {
-
         public string Name { get; set; }
         public int Level { get; set; }
         public int MaxAttack { get; set; }
@@ -14,64 +13,62 @@ namespace InlamningsUppgift3 {
         public int Exp { get; set; }
         public int Gold { get; private set; }
         public int Strength { get; private set; }
-        public int Toughness { get; private set; }
-
+        public int Toughness { get; set; }
         public bool GodMode { get; private set; }
-
-        private double expSumRequierdPerLevel = 60;
+        public double ExpSumRequierdPerLevel { get; set; }
+        public List<Item> EquippedItems { get; set; }
 
         public Player() {
             //Some Base stats
             this.SetHealth(200);
-            this.MaxAttack = 10;
-            this.MinAttack = 5;
+            this.MaxAttack = 5;
+            this.MinAttack = 2;
             this.Level = 1;
             this.Exp = 0;
             this.Gold = 0;
-            this.Strength = 5;
-            this.Toughness = 2;
+            this.Strength = 3;
+            this.Toughness = 1;
+            this.ExpSumRequierdPerLevel = 60;
+            this.EquippedItems = new List<Item>();
         }
 
         #region Public Methods
+
+        /// <summary>
+        /// Returns an int of attack damage. Based on a random value between MinAttack and MaxAttack with added strength.
+        /// </summary>
+        /// <returns></returns>
         public int Attack() {
-            return Utility.RandomInt(this.MinAttack, this.MaxAttack);
+            return Utility.RandomInt(this.MinAttack + this.Strength, this.MaxAttack + this.Strength);
         }
 
+
+        /// <summary>
+        /// Updates the Exp of the player. 
+        /// If player have more experience than experience needed for next level- the player will level up 
+        /// </summary>
+        /// <param name="exp"></param>
         public void UpdateExp(int exp) {
             Exp += exp;
-
-            if (Exp >= expSumRequierdPerLevel) {
+            if (Exp >= this.ExpSumRequierdPerLevel) {
                 Level++;
                 Console.WriteLine($"You have reached Level {this.Level}! Congrats!");
-                Exp = 0;
-
-                //Exp requierd is +10% per level
-                expSumRequierdPerLevel = 1.5 * expSumRequierdPerLevel;
-                UpdateStats();
                 Console.WriteLine("You have also gained some health!");
-                SetHealth(this.MaxHealth);
+                base.SetHealth(this.MaxHealth);
+
+                this.ExpSumRequierdPerLevel = (this.ExpSumRequierdPerLevel + this.ExpSumRequierdPerLevel) * 1.1;
+                //UpdateStats();
             }
         }
 
-        //Maybe dont need this
-        //public override void TakeDamage(int damage) {         
-        //    this.CurrentHealth -= damage;
-        //    if (this.CurrentHealth <= 0) {
-        //        this.IsDead = true;
-        //    }
-        //}
         public int PlayerTakeDamage(int damage) {
             damage -= this.Toughness;
             if(damage < 0) {
                 damage = 0;
             }
-            TakeDamage(damage);
+            base.TakeDamage(damage);
             return damage;
         }
-
-        //TODO Implement strength in attack dmg
-        //TODO write Shop.cs
-        //
 
         /// <summary>
         /// Prints a stat summary of the Player.
@@ -79,14 +76,16 @@ namespace InlamningsUppgift3 {
         /// <returns></returns>
         public override string ToString() {
             Console.Clear();
-            string s = @$"{this.Name}
-Level: {this.Level}
-Exp needed for next level: {expSumRequierdPerLevel - this.Exp}
-Attack damage: {this.MinAttack} - {this.MaxAttack} 
-Health: {this.CurrentHealth} / {this.MaxHealth}
-Strength: {this.Strength}
-Toughness: {this.Toughness}
-Gold: {this.Gold}";
+            string s = @$"**********
+* Name: {this.Name}
+* Level: {this.Level}
+* Hp: {this.CurrentHealth} / {this.MaxHealth}
+* Exp: {this.Exp} / {Convert.ToInt32(this.ExpSumRequierdPerLevel)}
+* Gold: {this.Gold}
+* Strength: {this.Strength}
+* Toughness: {this.Toughness}
+**********
+";
             return s;
         }
         
@@ -100,7 +99,7 @@ Gold: {this.Gold}";
 
         public int GiveGold(int amountGoldToGive) {
             if(this.Gold - amountGoldToGive <= 0) {
-                Console.WriteLine("You do not have the gold");
+                Console.WriteLine("You do not have that amount of gold.");
             } 
             else {
                 this.Gold -= amountGoldToGive;
@@ -108,6 +107,9 @@ Gold: {this.Gold}";
             return amountGoldToGive;
         }
 
+        /// <summary>
+        /// Gives player over 9000 in stats.
+        /// </summary>
         public void OmaeWaMouShindeiru() {
             this.GodMode = true;
 
@@ -119,13 +121,31 @@ Gold: {this.Gold}";
             this.Gold = 9999;
 
         }
+        /// <summary>
+        /// Player equip the item and adds it in a list containing item.
+        /// </summary>
+        /// <param name="item"></param>
+        public void EquipItem(Item item) {
+            EquippedItems.Add(item);
+            UpdateStats();
+        }
         #endregion
 
         #region Private Methods
+        /// <summary>
+        /// Updates player stats depending whats inside the item list.
+        /// </summary>
         private void UpdateStats() {
-            //TODO implement stats update. like +10% / Level
+            foreach (Item item in EquippedItems) {
+                if (item.StatName == "Toughness") {
+                    Console.WriteLine("updating toughness");
+                    this.Toughness += item.StatValue;
+                }
+                else if (item.StatName == "Strength") {
+                    this.Strength += item.StatValue;
+                }
+            }
         }
-
         #endregion
     }
 }
